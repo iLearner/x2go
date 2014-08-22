@@ -17,7 +17,7 @@ to a SD card Slot (You can also access a SD card through a USB):
 3)  Replacing ${card} with the SD card device you are using (eg. /dev/sdc, please be sure of this
     before proceeding, so not damage happens), run:
   
-        python execute sd ${card}
+        python execute.py sd ${card}
 
 4)  When finished, it will be safe to take out the SD card, and it will contain Lubuntu (as specified
     on the Cubietruck web site) and the EDX installation files for Cubietruck, on the folder
