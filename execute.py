@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# This Python script, with name "execute", executes a sequence of shell-commands reading
+# This Python executes a sequence of shell-commands reading
 # them from text files.
 #
 # You can pass to it multiple text file to be executed in sequence as in:
@@ -37,6 +37,17 @@
 #
 # Implementing automatic reboot-and-continue may be desirable down the road
 
+### On a high level, I'm not sure what the purpose of this file
+### is. Why not just run the file directly from the commandline. If
+### you need the ability to continue a build, make and a simple
+### Makefile would be a better tool, although it's not clear to me why
+### we need to stop and continue (documenting this would be nice).
+### 
+### Having commands like 'replacetext' is helpful, but those could be
+### broken out into independent scripts, so they can just run from
+### bash. This would be much easier to work with, since we could 
+### run portions of the script by hand 
+
 import os
 import os.path
 import sys
@@ -44,15 +55,23 @@ import time
 import subprocess
 from xml.dom import minidom
 
+### What is the purpose of these three lines? They appear to do nothing
 python = "python"
 if sys.version_info >= (3, 0):
     python = python + "3"
 
 working_dir = os.getcwd()
-
+### Same for these three lines. They appear to check the current directory, 
+### and then change to the current directory.... A one-line comment with 
+### high-level intent would be helpful
 dir_descriptor = os.open(working_dir, os.O_RDONLY)
 os.fchdir(dir_descriptor)
 os.close(dir_descriptor)
+
+### It would be helpful to document what is in reboot.txt. 
+
+### On a high level, my understanding was that this is running on the
+### PC and not on the CubieTruck. Why do we ever need to reboot?
 
 reboot = []
 try:
@@ -66,10 +85,21 @@ except Exception:
 
 command_file = 1
 
+### You'd be much better off using argparse. See: 
+###    https://docs.python.org/dev/library/argparse.html
+### This would be shorter, more readable, and more usable
 max_files = len(sys.argv)
 current_line = 0
 params = sys.argv
 if len(sys.argv) == 1 and len(reboot) > 5:
+    # I am completely confused by these lines. I have no idea what they mean. I don't know what
+    # reboot is, or what reboot[0] is, etc. 
+    # Clear variable names would help.  E.g. 
+    # start_of_some_data_structure = int(reboot[0])
+    # some_data_structure = reboot[start_of_some_data_structure:end_of_some_data_structure]
+    # Etc. 
+    # In practice, you'd almost certainly be better off using a dictionary with names, rather than file offsets, and pyyaml or json. 
+    # http://pyyaml.org/wiki/PyYAMLDocumentation
     command_file = int(reboot[int(reboot[0]) + 1])
     current_line = int(reboot[int(reboot[0]) + 2])
     max_files = int(reboot[0]) + 1
@@ -78,9 +108,36 @@ if len(sys.argv) == 1 and len(reboot) > 5:
 #if len(sys.argv) < 2:
     #sys.exit()
 
+# Why do we have an error parameter, rather than exceptions? 
 error = False
 file_idx = command_file
 line_idx = current_line
+
+# This loop is unreadable. It is over 200 lines of code. Would it be possible
+# to break this up into functions, with clear names and docstrings? 
+# Step 1, if we went this way, would be to break out special commands 
+# into seperate functions, and have those be mapped. E.g. 
+# 
+# def cd(line):
+#   ''' Changes a directory... '''
+#   os.fchdir...
+#
+# def replacetext(line)
+#   ...
+#
+# At that point, you'd dispatch to the appropriate function. 
+#
+# keywords = {'cd' : cd, 'replacetext': replacetext}
+# command = words[0]
+# if command in keywords: 
+#    keyword[command](words)
+#
+# If you wanted to be fancy, you could even populate the keywords
+# dictionary with a Python decorator
+#
+# I would propose we don't want to do this, but rather we want to
+# break these up into independent scripts.
+
 while file_idx < max_files:
     file_idx_add = 1
     current_file_name = params[file_idx]
