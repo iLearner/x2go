@@ -1,0 +1,18 @@
+sudo sed -i 's/raring/trusty/g' /etc/apt/sources.list
+
+# Disable third party ppas (optional, see note)
+cd /etc/apt/sources.list.d
+sudo rename 's/(.*)/$1.bak/' *
+sudo find . -type f -name "*" -print | xargs sed -i 's/raring/trusty/g'
+
+
+sudo apt-get -y update
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" dist-upgrade
+#sudo apt-get install --reinstall ubuntu-desktop
+#sudo update-grub
+#sudo update-initramfs -u
+
+#cd /etc/apt/sources.list.d
+#sudo find . -type f -name "*.bak"  -exec rename 's/.bak//' {} \;
+
+sudo reboot

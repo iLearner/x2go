@@ -9,37 +9,22 @@
 - name: add the mongodb signing key
   apt_key: >
     id=7F0CEB10
-    url={{MONGODB_APT_KEY}}
+    url={{ MONGODB_APT_KEY }}
     state=present
 
 - name: add the mongodb repo to the sources list
-  apt_repository: >
+  apt_repository_1.8: >
     repo='{{ MONGODB_REPO }}'
     state=present
+    validate_certs=no
 
 - name: install mongo server and recommends
   apt: >
-    pkg=mongodb-10gen={{ mongo_version }}
+    pkg=mongodb-org={{ mongo_version }}
     state=present install_recommends=yes
     force=yes update_cache=yes
 ]]></old>
-        <new><![CDATA[
-- name: download mongodb-clients_2.2.4-0ubuntu1_armhf.deb
-  get_url: >
-    url=http://launchpadlibrarian.net/136308686/mongodb-clients_2.2.4-0ubuntu1_armhf.deb
-    dest=/home/linaro/EDX
-
-- name: install mongodb-client and recommends
-  command: dpkg -i /home/linaro/EDX/mongodb-clients_2.2.4-0ubuntu1_armhf.deb
-
-- name: download mongodb-server_2.2.4-0ubuntu1_armhf.deb
-  get_url: >
-    url=http://launchpadlibrarian.net/136308685/mongodb-server_2.2.4-0ubuntu1_armhf.deb
-    dest=/home/linaro/EDX
-
-- name: install mongo server and recommends
-  command: dpkg -i /home/linaro/EDX/mongodb-server_2.2.4-0ubuntu1_armhf.deb
-]]></new>
+        <new><![CDATA[]]></new>
     </replacement>
 
 </file>

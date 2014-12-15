@@ -26,13 +26,19 @@ to a SD card Slot (You can also access a SD card through a USB):
 5)  Insert the created SD card on the Cubietruck SD card slot, turn on the Cubietruck,
     and Lubuntu will load.
 
-6)  Change directory and run the first part of the script ("update" file).
+6)  Change directory and run the first part of the script ("upgrade_trusty" file).
     Note: The initial installation of Lubuntu on Cubietruck has Python3
+  
+        cd /home/linaro/EDX
+        python3 execute upgrade_trusty
+
+7)  When finished Cubietruck will reboot, so change directory and run the second part of the script
+    which is the "update" file.
   
         cd /home/linaro/EDX
         python3 execute update
 
-7)  When finished Cubietruck will reboot, so change directory and run the second part of the script
+8)  When finished Cubietruck will reboot again, so change directory and run the third part of the script
     which consists of the EDX installation previous steps ("edxPRE"), the specific fixes for this
     platform ("fixes"), and the main EDX installation step ("edx"). You can see the files: "edxPRE",
     "fixes", and "edx", for better understanding.
@@ -40,12 +46,8 @@ to a SD card Slot (You can also access a SD card through a USB):
         cd /home/linaro/EDX
         python3 execute edxPRE fixes edx
 
-8)  At this point the installation will fail when running "edx", trying to make sure NGINX is started.
-    A reboot will fix this, so reboot and re-run "edx".
-  
-        sudo reboot
-        cd /home/linaro/EDX
-        python3 execute edx
+NOTE: At this point the installation will stop on the "libblas.so.3gf" issue.
+      Until this issue is fixed, the remainder steps will still have to be tested.
 
 9)  At this point, one more failure will hapend when the installation runs "apparmor_parser" on the
     "loading code sandbox profile" task, because of an issue with warnings. My fix for this is

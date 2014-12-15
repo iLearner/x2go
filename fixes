@@ -2,28 +2,18 @@
 #  Cubietruck Specific Fixes For Installing EDX Platform
 #################################################################
 
-# GIT-CORE DISTRIB_ID Replacement
-#
-# At the time I did this fix
-# "apt-add-repository ppa:git-core/ppa" was working only with the
-# "DSTRIB_ID" field in the "/etc/lsb-release" file set as
-# "Ubuntu" and not as "Linaro" as it supposed to be.
-# I am not sure of the consecuenses of this change down the road,
-# but expect this platform-related issue to be fixed in the future
-# so we can delete this fix.
-#
-OLD_TEXT_GIT="DISTRIB_ID=Linaro"
-NEW_TEXT_GIT="DISTRIB_ID=Ubuntu"
-sudo sed -i "s|${OLD_TEXT_GIT}|${NEW_TEXT_GIT}|g" /etc/lsb-release
-
 # Install Library Dependencies for Installing MongoDB
 # 
 # The following are required libraries for a direct installation of MongoDB
 # from "http://launchpadlibrarian.net"
 #
-apt-get install -y adduser libboost-filesystem1.49.0 libboost-program-options1.49.0 libboost-system1.49.0 libboost-thread1.49.0 libc6 libgcc1 libpcre3 libpcrecpp0 libsnappy1 libssl1.0.0 libstdc++6
+#apt-get install -y mongodb-server
+#sudo mkdir /data
+#sudo mkdir /data/db
+#
+apt-get install -y adduser libboost-filesystem1.54.0 libboost-program-options1.54.0 libboost-system1.54.0 libboost-thread1.54.0 libc6 libgcc1 libgoogle-perftools4 libpcap0.8 libpcre3 libpcrecpp0 libsnappy1 libssl1.0.0 libstdc++6 libv8-3.14.5 sysv-rc
 
-# Make sure the current dir is set to /home/linaro/EDX
+# Change dir back to /home/linaro/EDX
 cd /home/linaro/EDX
 
 # Set Texts-Replacement-File variable
@@ -32,17 +22,18 @@ replacementsFile=text_replacements.xml
 # Modify main.yml for tasks MongoDB installation
 #
 # I chose to install MongoDB Server directly from
-# "http://launchpadlibrarian.net/136308685/mongodb-server_2.2.4-0ubuntu1_armhf.deb",
+# "http://launchpadlibrarian.net/136308685/mongodb-server_2.4.9-0ubuntu1_armhf.deb",
 # for which we also need the Client
-# "http://launchpadlibrarian.net/136308686/mongodb-clients_2.2.4-0ubuntu1_armhf.deb"
+# "http://launchpadlibrarian.net/136308686/mongodb-clients_2.4.9-0ubuntu1_armhf.deb"
 # 
 # The following is the replacement in mongo, tasks, "main.yml" of the MongoDB
 # installation with this direct method. The EDX standard way to install MongoDB is more
 # desirable, but the standard way didn't find a repository key for this specific platform,
 # which is:  lubuntu, linaro, raring, for armhf hardware arquitecture.
-# Also, I wasn't sure of editing "main.yml on ".....roles/mongo/defaults/" directory.
+# I also edited "main.yml on ".....roles/mongo/defaults/" directory for this purpose.
 #
-replacetext mongo.tasks.main.yml:1 /var/tmp/configuration/playbooks/roles/mongo/tasks/main.yml
+sudo cp mongo_tasks_main.yml /var/tmp/configuration/playbooks/roles/mongo/tasks/main.yml
+sudo cp mongo_defaults_main.yml /var/tmp/configuration/playbooks/roles/mongo/defaults/main.yml
 
 # Modify main.yml for defaults OracleJDK installation
 #
@@ -61,20 +52,25 @@ replacetext oraclejdk.defaults.main.yml:1,2,3,4,5 /var/tmp/configuration/playboo
 #
 replacetext oraclejdk.tasks.main.yml:1 /var/tmp/configuration/playbooks/roles/oraclejdk/tasks/main.yml
 
+#echo '/usr/lib/libblas' | sudo tee /etc/ld.so.conf.d/libblas.conf
+#sudo ldconfig
+
 # Make "nodejs" callable as "node"
 #
 # Looks like the installation calls it as "node"
 # I found the explanation of this on the following web page:
 # "http://stackoverflow.com/questions/14914715/express-js-no-such-file-or-directory"
 #
-sudo ln -s /usr/bin/nodejs /usr/local/bin/node
+## Commented for now until passing libblas.so.3gf issue
+##sudo ln -s /usr/bin/nodejs /usr/local/bin/node
 
 # This is needed for matplotlib to be able to be installed
 #
 # matplotlib requires freetype or freetype2, and installing libxft-dev seems to solve
 # the following issue:  [pkg-config information for freetype2 could not be found.]
 #
-sudo apt-get install -y libxft-dev
+## Commented for now until passing libblas.so.3gf issue
+##sudo apt-get install -y libxft-dev
 
 # One more fix is explained on the file "apparmorFIX", which has to be run after
 # the specific issue happens.

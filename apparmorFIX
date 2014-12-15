@@ -14,5 +14,5 @@
 # Set Texts-Replacement-File variable
 replacementsFile=text_replacements.xml
 
-# Do the Replacement with an empty string
+# do the Replacement
 replacetext edxapp.tasks.python_sandbox_env.yml:1 /var/tmp/configuration/playbooks/roles/edxapp/tasks/python_sandbox_env.yml
