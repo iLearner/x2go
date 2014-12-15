@@ -22,9 +22,9 @@ replacementsFile=text_replacements.xml
 # Modify main.yml for tasks MongoDB installation
 #
 # I chose to install MongoDB Server directly from
-# "http://launchpadlibrarian.net/136308685/mongodb-server_2.4.9-0ubuntu1_armhf.deb",
+# "http://launchpadlibrarian.net/170838643/mongodb-server_2.4.9-1ubuntu2_armhf.deb",
 # for which we also need the Client
-# "http://launchpadlibrarian.net/136308686/mongodb-clients_2.4.9-0ubuntu1_armhf.deb"
+# "http://launchpadlibrarian.net/170838644/mongodb-clients_2.4.9-1ubuntu2_armhf.deb"
 # 
 # The following is the replacement in mongo, tasks, "main.yml" of the MongoDB
 # installation with this direct method. The EDX standard way to install MongoDB is more
