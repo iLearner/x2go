@@ -8,23 +8,7 @@
 # Download Required Files
 sudo wget -N "http://dl.cubieboard.org/software/a20-cubietruck/lubuntu/ct-lubuntu-card0-v1.00/u-boot-sunxi-with-spl-ct-20131102.bin"
 sudo wget -N "http://dl.cubieboard.org/software/a20-cubietruck/lubuntu/ct-lubuntu-card0-v1.00/server/bootfs-part1.tar.gz"
-#sudo wget -N "http://cdimage.ubuntu.com/lubuntu/daily-preinstalled/current/trusty-preinstalled-desktop-armhf+ac100.tar.gz"
-#sudo wget -N "http://cdimage.ubuntu.com/lubuntu/daily-preinstalled/current/trusty-preinstalled-desktop-armhf+ac100.bootimg"
 sudo wget -N "http://dl.cubieboard.org/software/a20-cubietruck/lubuntu/ct-lubuntu-card0-v1.00/server/rootfs-part2.tar.gz"
-##sudo wget -N "http://dl.cubieboard.org/software/a20-cubietruck/ubuntu-14.04/ubuntu-core-14.04-core.ext4.gz"
-#sudo wget -N "http://dl.cubieboard.org/software/a20-cubietruck/ubuntu-14.04/kernel-source.tar.gz"
-##sudo wget -N "https://www.kernel.org/pub/linux/kernel/v3.x/linux-3.4.104.tar.xz"
-#sudo wget -N "https://www.kernel.org/pub/linux/kernel/v3.x/patch-3.4.104.xz"
-##sudo wget -N "http://dl.cubieboard.org/software/a20-cubietruck/ubuntu-14.04/cubietruck_defconfig"
-##sudo wget -N "http://dl.cubieboard.org/software/a20-cubietruck/ubuntu-14.04/configs/env.cfg"
-##sudo wget -N "http://dl.cubieboard.org/software/a20-cubietruck/ubuntu-14.04/configs/image.cfg"
-##sudo wget -N "http://dl.cubieboard.org/software/a20-cubietruck/ubuntu-14.04/configs/sys_config.fex"
-##sudo wget -N "http://dl.cubieboard.org/software/a20-cubietruck/ubuntu-14.04/configs/sys_config_mmc.fex"
-##sudo wget -N "http://dl.cubieboard.org/software/a20-cubietruck/ubuntu-14.04/configs/sys_partition.fex"
-##sudo wget -N "http://dl.cubieboard.org/software/a20-cubietruck/ubuntu-14.04/configs/uEnv-mmc.txt"
-#sudo wget -N "http://cdimage.ubuntu.com/ubuntu-core/releases/14.04/release/ubuntu-core-14.04-core-armhf.tar.gz"
-##sudo wget -N "http://archive.ubuntu.com/ubuntu/pool/universe/g/gcc-4.6-armhf-cross/gcc-4.6-armhf-cross_1.63.tar.gz"
-##sudo wget -N "http://archive.ubuntu.com/ubuntu/pool/universe/a/armhf-cross-toolchain-base/armhf-cross-toolchain-base_1.82.tar.gz"
 
 # Variables
 #
@@ -45,40 +29,13 @@ sudo sfdisk ${card} < sd_card_partitions.out
 sudo mkfs.ext2 ${card}1
 sudo mkfs.ext4 ${card}2
 
-#gunzip -vcf ubuntu-core-14.04-core.ext4.gz > core
-#sudo mkdir /tmp/sdd3
-#sudo mount -t ext4 core /tmp/sdd3
-#sync
-
-#sudo losetup -o 1073741824 /dev/loop0 /home/admin1/Downloads/ct-ubuntu-nand.img
-#sudo mkfs.ext4 /dev/loop0
-#mkdir /tmp/sdd3
-#sudo mount -t ext4 /dev/loop0 /tmp/sdd3
-
-#sudo mkdir '/media/admin1/My Passport/EDX SD IMAGES/tmp'
-#sudo cp -rv /tmp/sdd3/* /home/tmp
-
-# Unmount SD Card Image Partitions
-#sudo umount /tmp/sdd3
-#sudo rmdir /tmp/sdd3
-#sudo losetup -d /dev/loop0
-
 # Copy System Files to SD Card
 mkdir /tmp/sdd1 /tmp/sdd2
 sudo mount -t ext2 ${card}1 /tmp/sdd1
 sudo mount -t ext4 ${card}2 /tmp/sdd2
 sudo tar -C /tmp/sdd1 -xvf bootfs-part1.tar.gz
 sudo tar -C /tmp/sdd2 -xvf rootfs-part2.tar.gz
-##sudo tar -C /tmp/sdd2 -xvf ubuntu-core-14.04-core-armhf.tar.gz
 sync
-##sudo cp -rv /tmp/sdd3/* /tmp/sdd2
-##sudo tar -C /tmp/sdd2/home -xvf linux-3.4.104.tar.xz
-##sudo cp patch-3.4.104.xz /tmp/sdd2/home/patch-3.4.104.xz
-#cd /tmp/sdd2/home
-#sudo unxz -f patch-3.4.104.xz
-#sudo cp ./patch-3.4.104 /tmp/sdd2/home/patch-3.4.104
-
-#sudo cat net >> /tmp/sdd2/etc/network/interfaces
 
 # Copy EDX Required Installation Files to /home/linaro/EDX on SD Card
 sudo mkdir /tmp/sdd2/home/linaro/EDX
@@ -89,54 +46,11 @@ sudo cp update /tmp/sdd2/home/linaro/EDX/update
 sudo cp edxPRE /tmp/sdd2/home/linaro/EDX/edxPRE
 sudo cp fixes /tmp/sdd2/home/linaro/EDX/fixes
 sudo cp edx /tmp/sdd2/home/linaro/EDX/edx
-sudo cp apparmorFIX /tmp/sdd2/home/linaro/EDX/apparmorFIX
+#sudo cp apparmorFIX /tmp/sdd2/home/linaro/EDX/apparmorFIX
 sudo cp text_replacements.xml /tmp/sdd2/home/linaro/EDX/text_replacements.xml
 sudo cp mongo_tasks_main.yml /tmp/sdd2/home/linaro/EDX/mongo_tasks_main.yml
 sudo cp mongo_defaults_main.yml /tmp/sdd2/home/linaro/EDX/mongo_defaults_main.yml
-##sudo cp cubietruck_defconfig /tmp/sdd2/home/linux-3.4.104/arch/arm/configs/cubietruck_defconfig
-#sudo mkdir /tmp/sdd2/home/kernelfiles
-#sudo cp env.cfg /tmp/sdd2/home/kernelfiles/env.cfg
-#sudo cp image.cfg /tmp/sdd2/home/kernelfiles/image.cfg
-#sudo cp sys_config.fex /tmp/sdd2/home/kernelfiles/sys_config.fex
-#sudo cp sys_config_mmc.fex /tmp/sdd2/home/kernelfiles/sys_config_mmc.fex
-#sudo cp sys_partition.fex /tmp/sdd2/home/kernelfiles/sys_partition.fex
-#sudo cp uEnv-mmc.txt /tmp/sdd2/home/kernelfiles/uEnv-mmc.txt
-sudo cp sd /tmp/sdd2/home/linaro/EDX/sd
-##sudo cp gcc-4.6-armhf-cross_1.63.tar.gz /tmp/sdd2/home/EDX/gcc-4.6-armhf-cross_1.63.tar.gz
-##sudo cp armhf-cross-toolchain-base_1.82.tar.gz /tmp/sdd2/home/EDX/armhf-cross-toolchain-base_1.82.tar.gz
-
-#sudo sed -i "s|ARCH		?= \$(SUBARCH)|ARCH		?= arm|g" /tmp/sdd2/home/kernel-source/Makefile
-#sudo sed -i "s|CROSS_COMPILE	?= \$(CONFIG_CROSS_COMPILE:\"%\"=%)|CROSS_COMPILE	?= /usr/bin/|g" /tmp/sdd2/home/kernel-source/Makefile
-#sudo sed -i "s|prompt \"Interrupt type\"||g" /tmp/sdd2/home/kernel-source/drivers/net/wireless/bcmdhd/Kconfig
-#sudo sed -i "s|source \"drivers/net/wireless/bcmdhd/Kconfig\"||g" /tmp/sdd2/home/kernel-source/drivers/net/wireless/Kconfig
-#sudo rm -r /tmp/sdd2/home/kernel-source/drivers/net/wireless/bcmdhd/*
-#sudo rmdir /tmp/sdd2/home/kernel-source/drivers/net/wireless/bcmdhd
-
-#####cd /tmp/sdd2/home
-#####sudo unxz -f  patch-3.4.104.xz
-#####sudo cp makeuimage /tmp/sdd2/home/linux-3.4.104/makeuimage
-##cd /tmp/sdd2/home/linux-3.4.104
-#wget http://arago-project.org/git/projects/?p=am33x-cm3.git\;a=blob_plain\;f=bin/am335x-pm-firmware.bin\;hb=HEAD -O kernel/firmware/am335x-pm-firmware.bin
-######sudo patch -p1 -t < /tmp/sdd2/home/patch-3.4.104
-##sudo make ARCH=arm CROSS_COMPILE=/usr/bin/ -j4 cubietruck_defconfig
-##sudo make clean
-##sudo make dep
-##sudo make ARCH=arm CROSS_COMPILE=/usr/bin/ -j4 uImage
-#sudo sed -i "s|#include <mach/system.h>|#include \"../../arch/arm/mach-msm/include/mach/system.h\"|g" /tmp/sdd2/home/kernel-source/drivers/gsensor/mxc622x.c
-#sudo sed -i "s|#include <mach/hardware.h>|#include \"../../arch/arm/mach-msm/include/mach/hardware.h\"|g" /tmp/sdd2/home/kernel-source/drivers/gsensor/mxc622x.c
-#sudo sed -i "s|#include <plat/sys_config.h>|#include \"../../arch/arm/plat-sunxi/include/plat/sys_config.h\"|g" /tmp/sdd2/home/kernel-source/drivers/gsensor/mxc622x.c
-#sudo sed -i "s|#include <plat/script.h>|#include \"script.h\"|g" /tmp/sdd2/home/kernel-source/arch/arm/plat-sunxi/include/plat/sys_config.h
-#sudo sed -i "s|#include <mach/system.h>|#include \"../../arch/arm/mach-msm/include/mach/system.h\"|g" /tmp/sdd2/home/kernel-source/drivers/gsensor/bma250.c
-#sudo sed -i "s|#include <mach/hardware.h>|#include \"../../arch/arm/mach-msm/include/mach/hardware.h\"|g" /tmp/sdd2/home/kernel-source/drivers/gsensor/bma250.c
-#sudo sed -i "s|#include <plat/sys_config.h>|#include \"../../arch/arm/plat-sunxi/include/plat/sys_config.h\"|g" /tmp/sdd2/home/kernel-source/drivers/gsensor/bma250.c
-#sudo sed -i "s|#include <mach/clock.h>|#include \"../../../arch/arm/mach-sun4i/include/mach/clock.h\"|g" /tmp/sdd2/home/kernel-source/drivers/input/keyboard/sun4i-keypad.c
-##sudo make ARCH=arm CROSS_COMPILE=/usr/bin/ -j4 modules
-
-##cd /tmp/sdd2/home/linux-3.4.104
-##sudo make modules_install INSTALL_MOD_PATH=/tmp/sdd2/lib/modules
-##cd /tmp/sdd2/boot
-##sudo cat /tmp/sdd2/home/linux-3.4.104/arch/arm/boot/zImage > vmlinuz
-##sudo cp /tmp/sdd2/home/linux-3.4.104/System.map .
+#sudo cp sd /tmp/sdd2/home/linaro/EDX/sd
 
 # Unmount SD Card Partitions
 sudo umount /tmp/sdd1
