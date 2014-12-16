@@ -46,7 +46,7 @@ sudo cp update /tmp/sdd2/home/linaro/EDX/update
 sudo cp edxPRE /tmp/sdd2/home/linaro/EDX/edxPRE
 sudo cp fixes /tmp/sdd2/home/linaro/EDX/fixes
 sudo cp edx /tmp/sdd2/home/linaro/EDX/edx
-#sudo cp apparmorFIX /tmp/sdd2/home/linaro/EDX/apparmorFIX
+sudo cp apparmorFIX /tmp/sdd2/home/linaro/EDX/apparmorFIX
 sudo cp text_replacements.xml /tmp/sdd2/home/linaro/EDX/text_replacements.xml
 sudo cp mongo_tasks_main.yml /tmp/sdd2/home/linaro/EDX/mongo_tasks_main.yml
 sudo cp mongo_defaults_main.yml /tmp/sdd2/home/linaro/EDX/mongo_defaults_main.yml
