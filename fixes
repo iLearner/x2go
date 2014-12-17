@@ -66,11 +66,15 @@ replacetext edxapp.tasks.python_sandbox_env.yml:3,4 /var/tmp/configuration/playb
 #         "code sandbox | (bootstrap) load code sandbox profile" on edxapp, tasks, python_sandbox_env.yml"
 # This will avoid that the EDX installation is stopped because of the n unexpected WARNING, on this task:
 # Similarily, this adds "ignore_errors: yes" to this other task:
-#         "code sandbox | (bootstrap) put code sandbox into aa-enforce or aa-complain mode depending on EDXAPP_SANDBOX_ENFORCE"
+#         "code sandbox | (bootstrap) put code sandbox into aa-enforce or aa-complain mode depending on EDXAPP_SANDBOX_ENFORCE" on edxapp, tasks,  python_sandbox_env.yml
+# And also:
+#         "code sandbox | put sandbox apparmor profile in complain mode" on edxapp, tasks,  deploy.yml
+#         "code sandbox | put code sandbox into aa-enforce or aa-complain mode, depending on EDXAPP_SANDBOX_ENFORCE"   on edxapp, tasks,  deploy.yml
 #
-# The following text replacement command is for that.
+# The following text replacement commands are for that.
 #
 replacetext edxapp.tasks.python_sandbox_env.yml:1,2 /var/tmp/configuration/playbooks/roles/edxapp/tasks/python_sandbox_env.yml
+replacetext edxapp.tasks.deploy.yml:1,2 /var/tmp/configuration/playbooks/roles/edxapp/tasks/deploy.yml
 
 # Make "nodejs" callable as "node"
 #

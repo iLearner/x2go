@@ -131,4 +131,44 @@
 
 </file>
 
+<file name="edxapp.tasks.deploy.yml">
+
+    <replacement id="1">
+        <old><![CDATA[
+- name: code sandbox | put sandbox apparmor profile in complain mode
+  command: /usr/sbin/aa-complain /etc/apparmor.d/code.sandbox
+  when: EDXAPP_PYTHON_SANDBOX
+  tags:
+  - edxapp-sandbox
+]]></old>
+        <new><![CDATA[
+- name: code sandbox | put sandbox apparmor profile in complain mode
+  command: /usr/sbin/aa-complain /etc/apparmor.d/code.sandbox
+  when: EDXAPP_PYTHON_SANDBOX
+  tags:
+  - edxapp-sandbox
+  ignore_errors: yes
+]]></new>
+    </replacement>
+
+    <replacement id="2">
+        <old><![CDATA[
+- name: code sandbox | put code sandbox into aa-enforce or aa-complain mode, depending on EDXAPP_SANDBOX_ENFORCE
+  command: /usr/sbin/{{ edxapp_aa_command }} /etc/apparmor.d/code.sandbox
+  when: EDXAPP_PYTHON_SANDBOX
+  tags:
+  - edxapp-sandbox
+]]></old>
+        <new><![CDATA[
+- name: code sandbox | put code sandbox into aa-enforce or aa-complain mode, depending on EDXAPP_SANDBOX_ENFORCE
+  command: /usr/sbin/{{ edxapp_aa_command }} /etc/apparmor.d/code.sandbox
+  when: EDXAPP_PYTHON_SANDBOX
+  tags:
+  - edxapp-sandbox
+  ignore_errors: yes
+]]></new>
+    </replacement>
+
+</file>
+
 </root>
