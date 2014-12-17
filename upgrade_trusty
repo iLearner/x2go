@@ -1,10 +1,13 @@
+#
+#  Upgrade Lubuntu 13 (Raring) on Cubietruck to Ubuntu 14 ( Trustry).
+#
+
 sudo sed -i 's/raring/trusty/g' /etc/apt/sources.list
 
 # Disable third party ppas (optional, see note)
 cd /etc/apt/sources.list.d
 sudo rename 's/(.*)/$1.bak/' *
 sudo find . -type f -name "*" -print | xargs sed -i 's/raring/trusty/g'
-
 
 sudo apt-get -y update
 sudo DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" dist-upgrade

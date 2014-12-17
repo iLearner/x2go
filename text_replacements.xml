@@ -85,7 +85,48 @@
   tags:
   - edxapp-sandbox
 ]]></old>
-        <new><![CDATA[]]></new>
+        <new><![CDATA[
+- name: code sandbox | (bootstrap) load code sandbox profile
+  command: apparmor_parser -r /etc/apparmor.d/code.sandbox
+  notify:
+  - "restart edxapp"
+  - "restart edxapp_workers"
+  tags:
+  - edxapp-sandbox
+  ignore_errors: yes
+]]></new>
+    </replacement>
+
+    <replacement id="2">
+        <old><![CDATA[
+- name: code sandbox | (bootstrap) put code sandbox into aa-enforce or aa-complain mode depending on EDXAPP_SANDBOX_ENFORCE
+  command: /usr/sbin/{{ edxapp_aa_command }} /etc/apparmor.d/code.sandbox
+  notify:
+  - "restart edxapp"
+  - "restart edxapp_workers"
+  tags:
+  - edxapp-sandbox
+]]></old>
+        <new><![CDATA[
+- name: code sandbox | (bootstrap) put code sandbox into aa-enforce or aa-complain mode depending on EDXAPP_SANDBOX_ENFORCE
+  command: /usr/sbin/{{ edxapp_aa_command }} /etc/apparmor.d/code.sandbox
+  notify:
+  - "restart edxapp"
+  - "restart edxapp_workers"
+  tags:
+  - edxapp-sandbox
+  ignore_errors: yes
+]]></new>
+    </replacement>
+
+    <replacement id="3">
+        <old>command: update-alternatives --set libblas.so.3gf /usr/lib/libblas/libblas.so.3gf</old>
+        <new>command: update-alternatives --set libblas.so.3 /usr/lib/libblas/libblas.so.3</new>
+    </replacement>
+
+    <replacement id="4">
+        <old>command: update-alternatives --set liblapack.so.3gf /usr/lib/lapack/liblapack.so.3gf</old>
+        <new>command: update-alternatives --set liblapack.so.3 /usr/lib/lapack/liblapack.so.3</new>
     </replacement>
 
 </file>

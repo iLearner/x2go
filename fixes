@@ -7,10 +7,6 @@
 # The following are required libraries for a direct installation of MongoDB
 # from "http://launchpadlibrarian.net"
 #
-#apt-get install -y mongodb-server
-#sudo mkdir /data
-#sudo mkdir /data/db
-#
 apt-get install -y adduser libboost-filesystem1.54.0 libboost-program-options1.54.0 libboost-system1.54.0 libboost-thread1.54.0 libc6 libgcc1 libgoogle-perftools4 libpcap0.8 libpcre3 libpcrecpp0 libsnappy1 libssl1.0.0 libstdc++6 libv8-3.14.5 sysv-rc
 
 # Change dir back to /home/linaro/EDX
@@ -22,9 +18,9 @@ replacementsFile=text_replacements.xml
 # Modify main.yml for tasks MongoDB installation
 #
 # I chose to install MongoDB Server directly from
-# "http://launchpadlibrarian.net/170838643/mongodb-server_2.4.9-1ubuntu2_armhf.deb",
+# "http://launchpadlibrarian.net/136308685/mongodb-server_2.4.9-1ubuntu2_armhf.deb",
 # for which we also need the Client
-# "http://launchpadlibrarian.net/170838644/mongodb-clients_2.4.9-1ubuntu2_armhf.deb"
+# "http://launchpadlibrarian.net/136308686/mongodb-clients_2.4.9-1ubuntu2_armhf.deb"
 # 
 # The following is the replacement in mongo, tasks, "main.yml" of the MongoDB
 # installation with this direct method. The EDX standard way to install MongoDB is more
@@ -52,8 +48,29 @@ replacetext oraclejdk.defaults.main.yml:1,2,3,4,5 /var/tmp/configuration/playboo
 #
 replacetext oraclejdk.tasks.main.yml:1 /var/tmp/configuration/playbooks/roles/oraclejdk/tasks/main.yml
 
-#echo '/usr/lib/libblas' | sudo tee /etc/ld.so.conf.d/libblas.conf
-#sudo ldconfig
+# Modify python_sandbox_env.yml on edxapp, tasks to fix the following Error:
+#
+#        " TASKS: [edxapp | code sandbox | Use libblas for 3gf] ",
+#        with  " stderr:  apdate-alternatives:: error: no alternatives for libblas.so.3gf ".
+#
+# I found a suggestion online that   "libblas,so,3gf"   has changed to "libblas.so.3"
+# Similarily:    "liblapack.so.3gf"   to   "liblapack.so.3"
+#
+# So, the following text replacement command is for that.
+#
+replacetext edxapp.tasks.python_sandbox_env.yml:3,4 /var/tmp/configuration/playbooks/roles/edxapp/tasks/python_sandbox_env.yml
+
+# These fixes are related to the Apparmor issue. They replace the file "apparmorFIX" and its corresponding step.
+#
+# Modify python_sandbox_env.yml on edxapp, tasks to add "ignore_errors: yes" to the task
+#         "code sandbox | (bootstrap) load code sandbox profile" on edxapp, tasks, python_sandbox_env.yml"
+# This will avoid that the EDX installation is stopped because of the n unexpected WARNING, on this task:
+# Similarily, this adds "ignore_errors: yes" to this other task:
+#         "code sandbox | (bootstrap) put code sandbox into aa-enforce or aa-complain mode depending on EDXAPP_SANDBOX_ENFORCE"
+#
+# The following text replacement command is for that.
+#
+replacetext edxapp.tasks.python_sandbox_env.yml:1,2 /var/tmp/configuration/playbooks/roles/edxapp/tasks/python_sandbox_env.yml
 
 # Make "nodejs" callable as "node"
 #
