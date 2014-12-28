@@ -6,9 +6,9 @@
 # ______________________________________________________________________________________
 
 # Download Required Files
-sudo wget -N "http://dl.cubieboard.org/software/a20-cubietruck/lubuntu/ct-lubuntu-card0-v1.00/u-boot-sunxi-with-spl-ct-20131102.bin"
-sudo wget -N "http://dl.cubieboard.org/software/a20-cubietruck/lubuntu/ct-lubuntu-card0-v1.00/server/bootfs-part1.tar.gz"
-sudo wget -N "http://dl.cubieboard.org/software/a20-cubietruck/lubuntu/ct-lubuntu-card0-v1.00/server/rootfs-part2.tar.gz"
+sudo wget -N "http://geekdome.net/x2go/lubuntu13/u-boot-sunxi-with-spl-ct-20131102.bin"
+sudo wget -N "http://geekdome.net/x2go/lubuntu13/bootfs-part1.tar.gz"
+sudo wget -N "http://geekdome.net/x2go/lubuntu13/edx_ubuntu13_17dec2014.tar.gz"
 
 # Variables
 #
@@ -30,24 +30,17 @@ sudo mkfs.ext2 ${card}1
 sudo mkfs.ext4 ${card}2
 
 # Copy System Files to SD Card
-mkdir /tmp/sdd1 /tmp/sdd2
+[ -d /tmp/sdd1 ] || mkdir /tmp/sdd1 
+[ -d /tmp/sdd2 ] || mkdir /tmp/sdd2
 sudo mount -t ext2 ${card}1 /tmp/sdd1
 sudo mount -t ext4 ${card}2 /tmp/sdd2
 sudo tar -C /tmp/sdd1 -xvf bootfs-part1.tar.gz
 sudo tar -C /tmp/sdd2 -xvf rootfs-part2.tar.gz
 sync
 
-# Copy EDX Required Installation Files to /home/linaro/EDX on SD Card
-mkdir /tmp/sdd2/home/linaro/EDX
-cp README.md /tmp/sdd2/home/linaro/EDX/README.md
-cp execute /tmp/sdd2/home/linaro/EDX/execute
-cp update /tmp/sdd2/home/linaro/EDX/update
-cp edxPRE /tmp/sdd2/home/linaro/EDX/edxPRE
-cp fixes /tmp/sdd2/home/linaro/EDX/fixes
-cp edx /tmp/sdd2/home/linaro/EDX/edx
-cp text_replacements.xml /tmp/sdd2/home/linaro/EDX/text_replacements.xml
-cp mongo_tasks_main.yml /tmp/sdd2/home/linaro/EDX/mongo_tasks_main.yml
-cp mongo_defaults_main.yml /tmp/sdd2/home/linaro/EDX/mongo_defaults_main.yml
+## Copy EDX Required Installation Files to /home/linaro/EDX on SD Card
+[ -d /tmp/sdd2/home/linaro/EDX ] || mkdir /tmp/sdd2/home/linaro/EDX
+d="/tmp/sdd2/home/linaro/EDX" for f in README.md execute update edxPRE fixes edx apparmorFIX text_replacements.xml ; do [ -f $d/$f ] || cp $f $d/$f ; done
 
 # Unmount SD Card Partitions
 sudo umount /tmp/sdd1
