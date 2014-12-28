@@ -3,6 +3,7 @@
 # Note: The Ubuntu "Raring" version has reached its end of its support, so an Update needs
 #       to redirect first the server to "old-releases.ubuntu/ubuntu"
 #
+
 sudo sed -i "s|ports.ubuntu.com/ubuntu-ports|old-releases.ubuntu.com/ubuntu|g" /etc/apt/sources.list
 sudo apt-get update -y
 sudo apt-get upgrade -y

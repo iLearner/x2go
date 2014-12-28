@@ -40,9 +40,10 @@ replacementsFile=text_replacements.xml
 # installation with this direct method. The EDX standard way to install MongoDB is more
 # desirable, but the standard way didn't find a repository key for this specific platform,
 # which is:  lubuntu, linaro, raring, for armhf hardware arquitecture.
-# Also, I wasn't sure of editing "main.yml on ".....roles/mongo/defaults/" directory.
+# I also edited "main.yml on ".....roles/mongo/defaults/" directory for this purpose.
 #
-replacetext mongo.tasks.main.yml:1 /var/tmp/configuration/playbooks/roles/mongo/tasks/main.yml
+sudo cp mongo_tasks_main.yml /var/tmp/configuration/playbooks/roles/mongo/tasks/main.yml
+sudo cp mongo_defaults_main.yml /var/tmp/configuration/playbooks/roles/mongo/defaults/main.yml
 
 # Modify main.yml for defaults OracleJDK installation
 #
@@ -60,6 +61,34 @@ replacetext oraclejdk.defaults.main.yml:1,2,3,4,5 /var/tmp/configuration/playboo
 # I don't know if the EDX platform uses it some where else. By now it didn't complain about it 
 #
 replacetext oraclejdk.tasks.main.yml:1 /var/tmp/configuration/playbooks/roles/oraclejdk/tasks/main.yml
+
+# Modify python_sandbox_env.yml on edxapp, tasks to fix the following Error:
+#
+#        " TASKS: [edxapp | code sandbox | Use libblas for 3gf] ",
+#        with  " stderr:  apdate-alternatives:: error: no alternatives for libblas.so.3gf ".
+#
+# I found a suggestion online that   "libblas,so,3gf"   has changed to "libblas.so.3"
+# Similarily:    "liblapack.so.3gf"   to   "liblapack.so.3"
+#
+# So, the following text replacement command is for that.
+#
+replacetext edxapp.tasks.python_sandbox_env.yml:3,4 /var/tmp/configuration/playbooks/roles/edxapp/tasks/python_sandbox_env.yml
+
+# These fixes are related to the Apparmor issue. They replace the file "apparmorFIX" and its corresponding step.
+#
+# Modify python_sandbox_env.yml on edxapp, tasks to add "ignore_errors: yes" to the task
+#         "code sandbox | (bootstrap) load code sandbox profile" on edxapp, tasks, python_sandbox_env.yml"
+# This will avoid that the EDX installation is stopped because of the n unexpected WARNING, on this task:
+# Similarily, this adds "ignore_errors: yes" to this other task:
+#         "code sandbox | (bootstrap) put code sandbox into aa-enforce or aa-complain mode depending on EDXAPP_SANDBOX_ENFORCE" on edxapp, tasks,  python_sandbox_env.yml
+# And also:
+#         "code sandbox | put sandbox apparmor profile in complain mode" on edxapp, tasks,  deploy.yml
+#         "code sandbox | put code sandbox into aa-enforce or aa-complain mode, depending on EDXAPP_SANDBOX_ENFORCE"   on edxapp, tasks,  deploy.yml
+#
+# The following text replacement commands are for that.
+#
+replacetext edxapp.tasks.python_sandbox_env.yml:1,2 /var/tmp/configuration/playbooks/roles/edxapp/tasks/python_sandbox_env.yml
+replacetext edxapp.tasks.deploy.yml:1,2 /var/tmp/configuration/playbooks/roles/edxapp/tasks/deploy.yml
 
 # Make "nodejs" callable as "node"
 #

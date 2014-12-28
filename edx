@@ -1,3 +1,4 @@
 # Run the edx_sandbox.yml playbook. (From standard EDX platform installation instructions)
 cd /var/tmp/configuration/playbooks
 sudo ansible-playbook -c local ./edx_sandbox.yml -i "localhost,"
+#--extra-vars "edx_platform_version=aspen.1 ora2_version=aspen.1 certs_version=aspen.1 forum_version=aspen.1 xqueue_version=aspen.1"
