@@ -8,7 +8,7 @@
 # Download Required Files
 sudo wget -N "http://geekdome.net/x2go/lubuntu13/u-boot-sunxi-with-spl-ct-20131102.bin"
 sudo wget -N "http://geekdome.net/x2go/lubuntu13/bootfs-part1.tar.gz"
-sudo wget -N "http://geekdome.net/x2go/lubuntu13/edx_ubuntu13_17dec2014.tar.gz"
+sudo wget -N "http://geekdome.net/x2go/lubuntu13/rootfs-part2.tar.gz"
 
 # Variables
 #
