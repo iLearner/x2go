@@ -40,7 +40,7 @@ sync
 
 ## Copy EDX Required Installation Files to /home/linaro/EDX on SD Card
 [ -d /tmp/sdd2/home/linaro/EDX ] || mkdir /tmp/sdd2/home/linaro/EDX
-d="/tmp/sdd2/home/linaro/EDX" for f in README.md execute update edxPRE fixes edx apparmorFIX text_replacements.xml ; do [ -f $d/$f ] || cp $f $d/$f ; done
+d="/tmp/sdd2/home/linaro/EDX" && for f in README.md execute update edxPRE fixes edx apparmorFIX text_replacements.xml ; do [ -f $d/$f ] || cp $f $d/$f ; done
 
 # Unmount SD Card Partitions
 sudo umount /tmp/sdd1
